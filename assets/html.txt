@@ -1,0 +1,16 @@
+<html lang="fr">
+  <meta name="viewport" content="width=device-width user-scalable=no zoom=1.1">
+  <style>img {max-width: 100%; height: auto}</style>
+  <body>
+    <div class="container" id="_flutter_target_do_not_delete">
+    replace_this_text
+    </div>
+    <script>
+    function outputsize() {
+        if (typeof window.flutter_inappwebview !== "undefined" && typeof window.flutter_inappwebview.callHandler !== "undefined")
+            window.flutter_inappwebview.callHandler('newHeight', document.getElementById("_flutter_target_do_not_delete").offsetHeight);
+        }
+        new ResizeObserver(outputsize).observe(_flutter_target_do_not_delete)
+    </script>
+  </body>
+</html>

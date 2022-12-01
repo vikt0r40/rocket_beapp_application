@@ -1,0 +1,7 @@
+package com.maverics.beapp.be_app_mobile
+
+import io.flutter.embedding.android.FlutterActivity
+import io.flutter.embedding.android.FlutterFragmentActivity
+
+class MainActivity: FlutterFragmentActivity()  {
+}
