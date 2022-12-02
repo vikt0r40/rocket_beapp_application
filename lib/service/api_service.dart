@@ -1,5 +1,6 @@
 import 'package:be_app_mobile/models/be_analytics.dart';
 import 'package:be_app_mobile/models/be_app.dart';
+import 'package:be_app_mobile/models/be_user.dart';
 import 'package:be_app_mobile/models/message.dart';
 import 'package:be_app_mobile/models/video.dart';
 import 'package:be_app_mobile/offline_settings.dart';
@@ -18,6 +19,8 @@ import '../screens/items/woo_commerce/woo_globals.dart';
 enum AnalyticsType { visitors, userShares, feedbacks, userRates, device }
 
 class APIService {
+  final CollectionReference usersCollection = FirebaseFirestore.instance.collection("users");
+
   List<Video> listVideos = <Video>[];
   OfflineSettings offlineSettings = OfflineSettings();
 
@@ -271,5 +274,26 @@ class APIService {
     } else {
       return false;
     }
+  }
+
+  updateUserSettings() async {
+    BeUser user = await getUserSettings();
+    await usersCollection.doc(FirebaseAuth.instance.currentUser?.uid ?? "").set(user.toJson());
+  }
+
+  updateUserSettingsWithUser(BeUser user) async {
+    await usersCollection.doc(FirebaseAuth.instance.currentUser?.uid ?? "").set(user.toJson());
+  }
+
+  Future<BeUser> getUserSettings() async {
+    DocumentSnapshot<Object?> snapshot = await usersCollection.doc(FirebaseAuth.instance.currentUser?.uid ?? "").get();
+
+    if (snapshot.data() == null) {
+      return BeUser(uid: "", displayName: "", email: "");
+    }
+
+    Map<dynamic, dynamic> itemsMaps = snapshot.data() as Map<dynamic, dynamic>;
+
+    return BeUser.fromJson(itemsMaps);
   }
 }
