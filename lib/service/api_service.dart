@@ -12,6 +12,7 @@ import 'package:universal_platform/universal_platform.dart';
 import '../models/app_options.dart';
 import '../models/feedback.dart';
 import '../models/general.dart';
+import '../models/invite.dart';
 import '../models/side_item.dart';
 import '../models/woo_config.dart';
 import '../screens/items/woo_commerce/woo_globals.dart';
@@ -20,6 +21,7 @@ enum AnalyticsType { visitors, userShares, feedbacks, userRates, device }
 
 class APIService {
   final CollectionReference usersCollection = FirebaseFirestore.instance.collection("users");
+  final CollectionReference generalSettingsCollection = FirebaseFirestore.instance.collection("settings");
 
   List<Video> listVideos = <Video>[];
   OfflineSettings offlineSettings = OfflineSettings();
@@ -130,6 +132,15 @@ class APIService {
         .collection("conversations")
         .doc(userId)
         .set({"messages": messages.map((v) => v.toJson()).toList(), "user_name": username});
+  }
+
+  Future updateInvites(List<Invite> items) async {
+    bool keyExist = await checkIfKeyExist("items");
+    if (keyExist) {
+      await generalSettingsCollection.doc("options").update({"invites": items.map((v) => v.toJson()).toList()});
+    } else {
+      await generalSettingsCollection.doc("options").set({"invites": items.map((v) => v.toJson()).toList()});
+    }
   }
 
   Future<AppOptions> getSideItems() async {

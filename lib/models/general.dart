@@ -47,6 +47,7 @@ class General {
   bool enableExitApp = false;
   bool enableToastOnJsAlerts = true;
   bool reloadWebViewOnBackground = false;
+  bool enableInvites = false;
   String fontName = "Roboto";
   int loadingType = 1;
   int bottomNavigationType = 1;
@@ -185,6 +186,7 @@ class General {
     serverKey = json['serverKey'] ?? "";
     instantUpdates = json['instantUpdates'] ?? false;
     pullDownToRefresh = json['pullDownToRefresh'] ?? true;
+    enableInvites = json['enableInvites'] ?? false;
     customUserAgent = json['customUserAgent'] ?? false;
     customUserAgentString = json['customUserAgentString'] ?? "";
     enableWebRTC = json['enableWebRTC'] ?? false;
@@ -222,6 +224,7 @@ class General {
     data['oneSignalAppID'] = oneSignalAppID;
     data['oneSignalRestApi'] = oneSignalRestApi;
     data['enableToastOnJsAlerts'] = enableToastOnJsAlerts;
+    data['enableInvites'] = enableInvites;
     data['enableSafeArea'] = enableSafeArea;
     data['loadingType'] = loadingType;
     data['fontName'] = fontName;

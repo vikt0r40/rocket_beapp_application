@@ -5,6 +5,7 @@ import 'package:be_app_mobile/models/welcome_popup.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 import 'custom_localization.dart';
+import 'invite.dart';
 import 'onboaring_page.dart';
 
 class AppOptions {
@@ -16,6 +17,7 @@ class AppOptions {
   List<CustomLocalization> customLocalizations = [];
   WelcomePopup popup = WelcomePopup(title: "", text: "", imageUrl: "");
   Splash splash = Splash(imageUrl: "", colors: []);
+  List<Invite> invites = [];
   Localization localization = Localization();
 
   AppOptions() {
@@ -67,6 +69,14 @@ class AppOptions {
       }
     }
     customLocalizations.insert(0, CustomLocalization(name: "English", localization: localization));
+
+    if (json["invites"] != null) {
+      json['invites'].forEach((v) {
+        invites.add(Invite.fromJson(v));
+      });
+    } else {
+      invites = [];
+    }
   }
 
   List<SideItem> getExampleItems() {
