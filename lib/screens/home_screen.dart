@@ -40,6 +40,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_downloader/flutter_downloader.dart';
 import 'package:flutter_inappwebview/flutter_inappwebview.dart';
+import 'package:flutter_keyboard_visibility/flutter_keyboard_visibility.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:google_mobile_ads/google_mobile_ads.dart';
@@ -972,6 +973,7 @@ class _BeWebViewState extends State<BeWebView> {
   InAppWebViewGroupOptions options = InAppWebViewGroupOptions();
   String token = "";
   SocialHelper socialHelper = SocialHelper();
+  late StreamSubscription<bool> keyboardSubscription;
 
   @override
   void initState() {
@@ -980,6 +982,12 @@ class _BeWebViewState extends State<BeWebView> {
       isLoading = false;
     }
     super.initState();
+    var keyboardVisibilityController = KeyboardVisibilityController();
+    keyboardSubscription = keyboardVisibilityController.onChange.listen((bool visible) async {
+      sleep(const Duration(milliseconds: 300));
+      webViewController?.android.pageDown(bottom: true);
+    });
+
     options = InAppWebViewGroupOptions(
         crossPlatform: InAppWebViewOptions(
           userAgent: widget.general.customUserAgent ? widget.general.customUserAgentString : "",
@@ -1080,6 +1088,10 @@ class _BeWebViewState extends State<BeWebView> {
               if (Navigator.canPop(context)) {
                 Navigator.pop(context);
               }
+            },
+            onConsoleMessage: (controller, message) {
+              print("Console Message");
+              print(message.message);
             },
             onCreateWindow: (controller, createWindowRequest) async {
               showBarModalBottomSheet(
