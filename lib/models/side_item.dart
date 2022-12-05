@@ -4,26 +4,13 @@ import '../screens/items/woo_commerce/woo_globals.dart';
 import 'item_localize.dart';
 
 enum ItemType {
-  text,
   link,
-  googleMaps,
-  feedback,
   rateUs,
   home,
-  aboutUs,
-  gallery,
   chat,
-  qrCode,
-  videos,
-  wooProducts,
   social,
   sideScreen,
   phone,
-  wordpress,
-  radioStreams,
-  youTubeVideos,
-  vimeoVideos,
-  appointments,
   languages,
   signOut,
   profile,
@@ -42,7 +29,7 @@ class SideItem {
   String tagID = "";
   String fontFamily = "FontAwesomeSolid";
   int iconCode = 0;
-  ItemType type = ItemType.text;
+  ItemType type = ItemType.home;
   bool enableLogoAndTitle = false;
   bool enableFooter = false;
   List<ItemLocalized> localizations = [];
