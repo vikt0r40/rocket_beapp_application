@@ -14,6 +14,7 @@ import '../../../autorization/pages/login_page.dart';
 import '../../../helpers/font_helper.dart';
 import '../../../models/be_app.dart';
 import '../../../service/api_service.dart';
+import '../woo_commerce/woo_globals.dart';
 import 'delete_account.dart';
 import 'edit_profile_screen.dart';
 
@@ -60,23 +61,23 @@ class _SettingsScreenState extends State<SettingsScreen> {
       child: ListView(
         children: [
           Text(
-            "Settings",
+            mainLocalization.localization.profileSettings,
             style: getFontStyle(30, Theme.of(context).primaryColor, FontWeight.bold, widget.general),
           ),
           const SizedBox(
             height: 15,
           ),
           SettingsGroup(
-            settingsGroupTitle: "Settings",
+            settingsGroupTitle: mainLocalization.localization.profileSettings,
             settingsGroupTitleStyle: getFontStyle(25, Colors.black, FontWeight.bold, widget.general),
             items: [
               SettingsItem(
                 onTap: () {},
                 icons: FontAwesomeIcons.bell,
                 iconStyle: IconStyle(),
-                title: "Push notifications",
+                title: mainLocalization.localization.profilePushTitle,
                 titleStyle: const TextStyle(color: Colors.black),
-                subtitle: "Enable push notifications",
+                subtitle: mainLocalization.localization.profilePushSubtitle,
                 trailing: Switch.adaptive(
                   value: isPushNotificationsEnabled,
                   inactiveTrackColor: Colors.grey,
@@ -99,7 +100,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
           ),
           // You can add a settings title
           SettingsGroup(
-            settingsGroupTitle: "Account",
+            settingsGroupTitle: mainLocalization.localization.profileAccount,
             settingsGroupTitleStyle: getFontStyle(25, Colors.black, FontWeight.bold, widget.general),
             items: [
               SettingsItem(
@@ -117,9 +118,9 @@ class _SettingsScreenState extends State<SettingsScreen> {
                 iconStyle: IconStyle(
                   backgroundColor: Colors.orangeAccent,
                 ),
-                title: "Edit account",
+                title: mainLocalization.localization.profileEditTitle,
                 titleStyle: const TextStyle(color: Colors.black),
-                subtitle: "Tap to change your profile data",
+                subtitle: mainLocalization.localization.profileEditSubtitle,
               ),
               SettingsItem(
                 onTap: () {
@@ -129,9 +130,9 @@ class _SettingsScreenState extends State<SettingsScreen> {
                 iconStyle: IconStyle(
                   backgroundColor: Colors.black26,
                 ),
-                title: "Sign out",
+                title: mainLocalization.localization.profileSignOutTitle,
                 titleStyle: const TextStyle(color: Colors.black),
-                subtitle: "Sign out from your account",
+                subtitle: mainLocalization.localization.profileSignOutSubtitle,
               ),
               SettingsItem(
                 onTap: () {
@@ -149,8 +150,8 @@ class _SettingsScreenState extends State<SettingsScreen> {
                 iconStyle: IconStyle(
                   backgroundColor: Colors.redAccent,
                 ),
-                title: "Delete account",
-                subtitle: "Delete permanently account",
+                title: mainLocalization.localization.profileDeleteTitle,
+                subtitle: mainLocalization.localization.profileDeleteSubtitle,
                 titleStyle: const TextStyle(
                   color: Colors.red,
                   fontWeight: FontWeight.bold,

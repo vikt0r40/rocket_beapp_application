@@ -86,9 +86,51 @@ class Localization {
   String feedbackDescriptionError = "Description is required field";
   String feedbackSuccessTitle = "Success";
   String feedbackSuccessMessage = "Thank you for your feedback! We will contact you as soon as possible";
+
+  String profileSettings = "Settings";
+  String profileAccount = "Account";
+  String profilePushTitle = "Push notifications";
+  String profilePushSubtitle = "Enable push notifications";
+  String profileEditTitle = "Edit Account";
+  String profileEditSubtitle = "Tap to change your profile data";
+  String profileSignOutTitle = "Sign out";
+  String profileSignOutSubtitle = "Sign out from your account";
+  String profileDeleteTitle = "Delete account";
+  String profileDeleteSubtitle = "Delete permanently account";
+  String profileEditButton = "Update Profile";
+  String deleteAccountMessage =
+      "Account deletion will erase your entire account including all courses that are related. You will no longer be able to login with this account and watch your purchased or favorite courses. Your personal info and support messages will be erased as well. There is no recovery after account deletion. Make sure this is exactly what you want!";
+  String deleteAccountButton = "CONFIRM DELETION";
+  String deleteAccountHint = "You will permanently lose your courses, messages and profile info. After this, there is no turning back";
+  String deleteAccountEnterPass = "Enter password";
+  String deleteAccountAccountPass = "Account Password";
+  String deleteAccountConfirmButton = "Submit";
+  String deleteAccountCancelButton = "Cancel";
+
   Localization();
 
   Localization.fromJson(Map<dynamic, dynamic> json) {
+    profileSettings = json["profileSettings"] ?? "Settings";
+    profileAccount = json["profileAccount"] ?? "Account";
+    profilePushTitle = json["profilePushTitle"] ?? "Push notifications";
+    profilePushSubtitle = json["profilePushSubtitle"] ?? "Enable push notifications";
+    profileEditTitle = json["profileEditTitle"] ?? "Edit Account";
+    profileEditSubtitle = json["profileEditSubtitle"] ?? "Tap to change your profile data";
+    profileSignOutTitle = json["profileSignOutTitle"] ?? "Sign out";
+    profileSignOutSubtitle = json["profileSignOutSubtitle"] ?? "Sign out from your account";
+    profileDeleteTitle = json["profileDeleteTitle"] ?? "Delete account";
+    profileDeleteSubtitle = json["profileDeleteSubtitle"] ?? "Delete permanently account";
+    profileEditButton = json["profileEditButton"] ?? "Update Profile";
+    deleteAccountMessage = json["deleteAccountMessage"] ??
+        "Account deletion will erase your entire account including all courses that are related. You will no longer be able to login with this account and watch your purchased or favorite courses. Your personal info and support messages will be erased as well. There is no recovery after account deletion. Make sure this is exactly what you want!";
+    deleteAccountButton = json["deleteAccountButton"] ?? "CONFIRM DELETION";
+    deleteAccountHint =
+        json["deleteAccountHint"] ?? "You will permanently lose your courses, messages and profile info. After this, there is no turning back";
+    deleteAccountEnterPass = json["deleteAccountEnterPass"] ?? "Enter password";
+    deleteAccountAccountPass = json["deleteAccountAccountPass"] ?? "Account Password";
+    deleteAccountConfirmButton = json["deleteAccountConfirmButton"] ?? "Submit";
+    deleteAccountCancelButton = json["deleteAccountCancelButton"] ?? "Cancel";
+
     feedbackTitle = json["feedbackTitle"] ?? "Leave us a feedback";
     feedbackName = json["feedbackName"] ?? "Your name";
     feedbackEmail = json["feedbackEmail"] ?? "Your email";
@@ -263,6 +305,25 @@ class Localization {
     data['pageErrorButtonRefresh'] = pageErrorButtonRefresh;
     data['permissions'] = permissions;
     data['permissionsTitle'] = permissionsTitle;
+
+    data["profileSettings"] = profileSettings;
+    data["profileAccount"] = profileAccount;
+    data["profilePushTitle"] = profilePushTitle;
+    data["profilePushSubtitle"] = profilePushSubtitle;
+    data["profileEditTitle"] = profileEditTitle;
+    data["profileEditSubtitle"] = profileEditSubtitle;
+    data["profileSignOutTitle"] = profileSignOutTitle;
+    data["profileSignOutSubtitle"] = profileSignOutSubtitle;
+    data["profileDeleteTitle"] = profileDeleteTitle;
+    data["profileDeleteSubtitle"] = profileDeleteSubtitle;
+    data["profileEditButton"] = profileEditButton;
+    data["deleteAccountMessage"] = deleteAccountMessage;
+    data["deleteAccountButton"] = deleteAccountButton;
+    data["deleteAccountHint"] = deleteAccountHint;
+    data["deleteAccountEnterPass"] = deleteAccountEnterPass;
+    data["deleteAccountAccountPass"] = deleteAccountAccountPass;
+    data["deleteAccountConfirmButton"] = deleteAccountConfirmButton;
+    data["deleteAccountCancelButton"] = deleteAccountCancelButton;
     return data;
   }
 }

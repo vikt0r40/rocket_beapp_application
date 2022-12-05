@@ -66,13 +66,13 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        "Edit Profile",
+                        mainLocalization.localization.profileEditTitle,
                         style: getFontStyle(FontSize.xxLarge, Colors.black, FontWeight.w600, widget.general),
                       ),
                       Padding(
                         padding: const EdgeInsets.only(top: 7),
                         child: Text(
-                          "Please edit fields that you want",
+                          mainLocalization.localization.profileEditSubtitle,
                           style: getFontStyle(FontSize.medium, ThemeColors.greyTextColor, FontWeight.w600, widget.general),
                         ),
                       ),
@@ -86,7 +86,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                               controller: _nameController,
                               validator: (value) {
                                 if (_nameController.text.isEmpty) {
-                                  return "This field can't be empty";
+                                  return mainLocalization.localization.authThisFieldCantBeEmpty;
                                 }
                                 return null;
                               },
@@ -96,7 +96,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                               decoration: InputDecoration(
                                 fillColor: Colors.black87,
                                 filled: true,
-                                hintText: "Fullname",
+                                hintText: mainLocalization.localization.authFullName,
                                 hintStyle: getFontStyle(FontSize.medium, ThemeColors.textFieldHintColor, FontWeight.w400, widget.general),
                                 border: const OutlineInputBorder(
                                   borderSide: BorderSide.none,
@@ -111,7 +111,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                               controller: _emailController,
                               validator: (value) {
                                 if (_emailController.text.isEmpty) {
-                                  return "This field can't be empty";
+                                  return mainLocalization.localization.authThisFieldCantBeEmpty;
                                 }
                                 return null;
                               },
@@ -121,7 +121,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                               decoration: InputDecoration(
                                 fillColor: ThemeColors.textFieldBgColor,
                                 filled: true,
-                                hintText: "Email",
+                                hintText: mainLocalization.localization.authEmail,
                                 hintStyle: getFontStyle(FontSize.medium, ThemeColors.textFieldHintColor, FontWeight.w400, widget.general),
                                 border: const OutlineInputBorder(
                                   borderSide: BorderSide.none,
@@ -136,7 +136,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                               controller: _passwordController,
                               validator: (value) {
                                 if (_passwordController.text.isEmpty) {
-                                  return "This field can't be empty";
+                                  return mainLocalization.localization.authThisFieldCantBeEmpty;
                                 }
                                 return null;
                               },
@@ -147,7 +147,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                               decoration: InputDecoration(
                                 fillColor: ThemeColors.textFieldBgColor,
                                 filled: true,
-                                hintText: "Password",
+                                hintText: mainLocalization.localization.authPass,
                                 hintStyle: getFontStyle(FontSize.medium, ThemeColors.textFieldHintColor, FontWeight.w400, widget.general),
                                 border: const OutlineInputBorder(
                                   borderSide: BorderSide.none,
@@ -157,7 +157,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                             ),
                             const SizedBox(height: 70),
                             MainButton(
-                              text: "Update Profile",
+                              text: mainLocalization.localization.profileEditButton,
                               onTap: () {
                                 _formKey.currentState!.validate();
                                 updateAction();

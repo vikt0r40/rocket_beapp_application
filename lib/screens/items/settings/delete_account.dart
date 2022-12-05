@@ -9,6 +9,7 @@ import '../../../autorization/components/main_button.dart';
 import '../../../autorization/helpers/font_size.dart';
 import '../../../autorization/pages/login_page.dart';
 import '../../../helpers/font_helper.dart';
+import '../woo_commerce/woo_globals.dart';
 
 class DeleteAccount extends StatefulWidget {
   const DeleteAccount({Key? key, required this.general, required this.options}) : super(key: key);
@@ -41,13 +42,13 @@ class _DeleteAccountState extends State<DeleteAccount> {
               mainAxisSize: MainAxisSize.min,
               children: [
                 Text(
-                  "Delete Account",
+                  mainLocalization.localization.profileDeleteTitle,
                   style: getFontStyle(FontSize.xxLarge, Colors.black, FontWeight.w600, widget.general),
                 ),
                 Padding(
                   padding: const EdgeInsets.only(top: 20),
                   child: Text(
-                    "Account deletion will erase your entire account including all courses that are related. You will no longer be able to login with this account and watch your purchased or favorite courses. Your personal info and support messages will be erased as well. There is no recovery after account deletion. Make sure this is exactly what you want!",
+                    mainLocalization.localization.deleteAccountMessage,
                     style: getFontStyle(FontSize.medium, Colors.black, FontWeight.w600, widget.general),
                   ),
                 ),
@@ -55,7 +56,7 @@ class _DeleteAccountState extends State<DeleteAccount> {
                   height: 50,
                 ),
                 MainButton(
-                  text: "CONFIRM DELETION",
+                  text: mainLocalization.localization.deleteAccountButton,
                   onTap: () {
                     deleteAccountAction();
                   },
@@ -66,7 +67,7 @@ class _DeleteAccountState extends State<DeleteAccount> {
                 Padding(
                   padding: const EdgeInsets.only(top: 10),
                   child: Text(
-                    "You will permanently lose your courses, messages and profile info. After this, there is no turning back",
+                    mainLocalization.localization.deleteAccountHint,
                     style: getFontStyle(FontSize.medium, Colors.grey, FontWeight.w600, widget.general),
                   ),
                 ),
@@ -87,14 +88,14 @@ class _DeleteAccountState extends State<DeleteAccount> {
         context: context,
         builder: (context) {
           return AlertDialog(
-            title: Text("Enter password"),
+            title: Text(mainLocalization.localization.deleteAccountEnterPass),
             content: TextField(
               controller: passwordController,
-              decoration: InputDecoration(hintText: "Account Password"),
+              decoration: InputDecoration(hintText: mainLocalization.localization.deleteAccountAccountPass),
             ),
             actions: <Widget>[
               MainButton(
-                text: "Cancel",
+                text: mainLocalization.localization.deleteAccountCancelButton,
                 onTap: () {
                   Navigator.pop(context);
                 },
@@ -103,7 +104,7 @@ class _DeleteAccountState extends State<DeleteAccount> {
                 textColor: Colors.white,
               ),
               MainButton(
-                text: "Submit",
+                text: mainLocalization.localization.deleteAccountConfirmButton,
                 onTap: () async {
                   await reAuthenticateWithCredential(passwordController.text);
                 },
@@ -133,7 +134,7 @@ class _DeleteAccountState extends State<DeleteAccount> {
     } on Exception catch (e) {
       Navigator.pop(context);
       passwordController.text = "";
-      var snackBar = SnackBar(content: Text("Invalid Password"));
+      var snackBar = SnackBar(content: Text(mainLocalization.localization.authInvalidPassword));
       ScaffoldMessenger.of(context).showSnackBar(snackBar);
     }
   }
