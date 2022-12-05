@@ -2,7 +2,6 @@ import 'package:be_app_mobile/models/be_app.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
-import '../models/woo_config.dart';
 import '../screens/home_screen.dart';
 
 class DemoWidget extends StatefulWidget {
@@ -162,7 +161,6 @@ class _DemoWidgetState extends State<DemoWidget> {
             builder: (context) => MobileScreen(
                   general: widget.model.general,
                   appOptions: widget.model.options,
-                  wooConfig: widget.model.wooConfig ?? WooConfig(),
                 )));
   }
 

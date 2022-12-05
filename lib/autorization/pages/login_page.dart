@@ -3,11 +3,8 @@ import 'package:be_app_mobile/autorization/pages/signup_page.dart';
 import 'package:be_app_mobile/autorization/service/auth_service.dart';
 import 'package:be_app_mobile/helpers/font_helper.dart';
 import 'package:be_app_mobile/models/be_app.dart';
-import 'package:be_app_mobile/models/woo_user_model.dart';
-import 'package:be_app_mobile/service/woocommerce_service.dart';
 import 'package:flutter/material.dart';
 
-import '../../helpers/shared_service.dart';
 import '../../screens/items/woo_commerce/woo_globals.dart';
 import '../components/main_button.dart';
 import '../helpers/font_size.dart';
@@ -154,11 +151,7 @@ class _LoginPageState extends State<LoginPage> {
                           text: _auth.localize.authSignIn,
                           onTap: () {
                             _formKey.currentState!.validate();
-                            if (widget.model.wooConfig?.enableWooAuthorization ?? false) {
-                              wooEmailLoginAction();
-                            } else {
-                              emailLoginAction();
-                            }
+                            emailLoginAction();
                           },
                           general: widget.model.general,
                         ),
@@ -247,17 +240,6 @@ class _LoginPageState extends State<LoginPage> {
     }
   }
 
-  void wooEmailLoginAction() async {
-    WooUserModel userModel = await WooService().loginCustomer(_emailController.text, _passwordController.text);
-    if (userModel.success) {
-      SharedService.setLoginDetails(userModel);
-      Navigator.push(context, MaterialPageRoute(builder: (context) => SplashApp(beApp: widget.model)));
-    } else {
-      var snackBar = SnackBar(content: Text(_auth.localize.authInvalidPassword));
-      ScaffoldMessenger.of(context).showSnackBar(snackBar);
-    }
-  }
-
   void emailLoginAction() async {
     dynamic result = await _auth.signInWithEmail(_emailController.text, _passwordController.text);
     if (result == null) {
@@ -278,26 +260,18 @@ class _LoginPageState extends State<LoginPage> {
   }
 
   bool showFacebookAuth() {
-    if (widget.model.wooConfig?.enableWooAuthorization ?? false) {
-      return false;
+    if (widget.model.general.enableFacebookLogin) {
+      return true;
     } else {
-      if (widget.model.general.enableFacebookLogin) {
-        return true;
-      } else {
-        return false;
-      }
+      return false;
     }
   }
 
   bool showGoogleAuth() {
-    if (widget.model.wooConfig?.enableWooAuthorization ?? false) {
-      return false;
+    if (widget.model.general.enableGoogleLogin) {
+      return true;
     } else {
-      if (widget.model.general.enableGoogleLogin) {
-        return true;
-      } else {
-        return false;
-      }
+      return false;
     }
   }
 }

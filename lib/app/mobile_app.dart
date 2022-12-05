@@ -1,12 +1,9 @@
 import 'package:be_app_mobile/models/be_app.dart';
-import 'package:be_app_mobile/models/woo_config.dart';
 import 'package:be_app_mobile/offline_settings.dart';
 import 'package:be_app_mobile/widgets/be_construction.dart';
 import 'package:be_app_mobile/widgets/demo_widget.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:google_mobile_ads/google_mobile_ads.dart';
-import 'package:screen_protector/screen_protector.dart';
 
 import '../models/app_options.dart';
 import '../models/general.dart';
@@ -26,14 +23,6 @@ class _BeAppState extends State<BeApp> {
   @override
   void initState() {
     // TODO: implement initState
-    if (widget.beAppModel.general.enabledAdmob) {
-      MobileAds.instance.initialize();
-    }
-    if (widget.beAppModel.general.enableScreenSecurity) {
-      ScreenProtector.preventScreenshotOn();
-    } else {
-      ScreenProtector.preventScreenshotOff();
-    }
     super.initState();
   }
 
@@ -48,7 +37,6 @@ class _BeAppState extends State<BeApp> {
         : MobileScreen(
             general: widget.beAppModel.general,
             appOptions: widget.beAppModel.options,
-            wooConfig: widget.beAppModel.wooConfig ?? WooConfig(),
           );
   }
 
@@ -91,7 +79,6 @@ class _BeAppState extends State<BeApp> {
           return MobileScreen(
             general: general,
             appOptions: options,
-            wooConfig: widget.beAppModel.wooConfig ?? WooConfig(),
           );
         } else {
           return Loading(

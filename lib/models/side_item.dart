@@ -1,7 +1,6 @@
-import 'package:be_app_mobile/models/youtube_video.dart';
-import 'package:be_app_mobile/screens/items/woo_commerce/woo_globals.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
+import '../screens/items/woo_commerce/woo_globals.dart';
 import 'item_localize.dart';
 
 enum ItemType {
@@ -46,17 +45,11 @@ class SideItem {
   ItemType type = ItemType.text;
   bool enableLogoAndTitle = false;
   bool enableFooter = false;
-  List<YVideo> youtubeVideos = [];
   List<ItemLocalized> localizations = [];
 
   SideItem({required this.title});
 
   SideItem.fromJson(Map<dynamic, dynamic> json) {
-    if (json["youtubeVideos"] != null) {
-      json['youtubeVideos'].forEach((v) {
-        youtubeVideos.add(YVideo.fromJson(v));
-      });
-    }
     if (json["localizations"] != null) {
       json['localizations'].forEach((v) {
         localizations.add(ItemLocalized.fromJson(v));
@@ -81,7 +74,6 @@ class SideItem {
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = <String, dynamic>{};
-    data["youtubeVideos"] = youtubeVideos.map((v) => v.toJson()).toList();
     data["localizations"] = localizations.map((v) => v.toJson()).toList();
     data['uid'] = uid;
     data['title'] = title;

@@ -1,9 +1,7 @@
 import 'package:be_app_mobile/autorization/service/auth_service.dart';
 import 'package:be_app_mobile/helpers/font_helper.dart';
 import 'package:be_app_mobile/models/be_app.dart';
-import 'package:be_app_mobile/models/woo_user.dart';
 import 'package:be_app_mobile/screens/items/woo_commerce/woo_globals.dart';
-import 'package:be_app_mobile/service/woocommerce_service.dart';
 import 'package:be_app_mobile/widgets/loading.dart';
 import 'package:flutter/material.dart';
 
@@ -192,11 +190,8 @@ class _SignUpPageState extends State<SignUpPage> {
                       text: mainLocalization.localization.authSignUp,
                       onTap: () {
                         _formKey.currentState!.validate();
-                        if (widget.model.wooConfig?.enableWooAuthorization ?? false) {
-                          signUpWooCommerceAction();
-                        } else {
-                          signUpAction();
-                        }
+
+                        signUpAction();
                       },
                       general: widget.model.general,
                     ),
@@ -208,18 +203,6 @@ class _SignUpPageState extends State<SignUpPage> {
         ),
       ),
     );
-  }
-
-  void signUpWooCommerceAction() async {
-    WooUser user = WooUser();
-    user.email = _emailController.text;
-    user.password = _passwordController.text;
-    user.firstName = _nameController.text;
-    user.lastName = " ";
-    bool success = await WooService().createCustomer(user);
-    if (success) {
-      Navigator.pop(context);
-    }
   }
 
   void signUpAction() async {

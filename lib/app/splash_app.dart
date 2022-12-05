@@ -1,21 +1,16 @@
 import 'dart:async';
 
-import 'package:be_app_mobile/helpers/font_helper.dart';
 import 'package:be_app_mobile/models/be_app.dart';
 import 'package:be_app_mobile/models/custom_localization.dart';
 import 'package:be_app_mobile/models/localization.dart';
-import 'package:be_app_mobile/screens/items/woo_commerce/woo_globals.dart';
-import 'package:be_app_mobile/service/woocommerce_service.dart';
-import 'package:be_app_mobile/widgets/be_image.dart';
 import 'package:be_app_mobile/widgets/loading.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_native_splash/flutter_native_splash.dart';
-import 'package:introduction_screen/introduction_screen.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-import '../models/onboaring_page.dart';
+import '../screens/items/woo_commerce/woo_globals.dart';
 import '../screens/select_language_screen.dart';
 import '../service/api_service.dart';
 import '../widgets/permissions_widget.dart';
@@ -43,7 +38,6 @@ class _SplashAppState extends State<SplashApp> {
       systemNavigationBarDividerColor: widget.beApp.general.getAndroidSystemButtonsColor(),
     ));
     super.initState();
-    loadStoreCurrency();
     loadAppSettings();
     checkForPermissions();
   }
@@ -111,38 +105,8 @@ class _SplashAppState extends State<SplashApp> {
   }
 
   Widget loadStartingScreen() {
-    return widget.beApp.options.onboardingPages.isEmpty
-        ? BeApp(
-            beAppModel: widget.beApp,
-          )
-        : isLoggedIn
-            ? BeApp(
-                beAppModel: widget.beApp,
-              )
-            : Scaffold(backgroundColor: Colors.white, body: onBoardingScreen());
-  }
-
-  Widget onBoardingScreen() {
-    return IntroductionScreen(
-      pages: onBoardingPages(),
-      globalBackgroundColor: widget.beApp.general.getOnBoardingColor(),
-      onDone: () async {
-        moveToApp();
-      },
-      onSkip: () async {
-        moveToApp();
-      },
-      showBackButton: false,
-      showSkipButton: true,
-      showNextButton: false,
-      skip: Text(
-        mainLocalization.localization.skip,
-        style: getFontStyle(14, widget.beApp.general.getOnBoardingTextColor(), FontWeight.bold, widget.beApp.general),
-      ),
-      done: Text(
-        mainLocalization.localization.continueText,
-        style: getFontStyle(14, widget.beApp.general.getOnBoardingTextColor(), FontWeight.bold, widget.beApp.general),
-      ),
+    return BeApp(
+      beAppModel: widget.beApp,
     );
   }
 
@@ -155,30 +119,6 @@ class _SplashAppState extends State<SplashApp> {
             builder: (context) => BeApp(
                   beAppModel: widget.beApp,
                 )));
-  }
-
-  List<PageViewModel> onBoardingPages() {
-    return List.generate(widget.beApp.options.onboardingPages.length, (index) {
-      OnboardingPage page = widget.beApp.options.onboardingPages[index];
-      PageViewModel model = PageViewModel(
-        title: page.title,
-        body: page.text,
-        decoration: PageDecoration(
-          pageColor: widget.beApp.general.getOnBoardingColor(),
-          titleTextStyle: getFontStyle(20, widget.beApp.general.getOnBoardingTextColor(), FontWeight.bold, widget.beApp.general),
-          bodyTextStyle: getFontStyle(18, widget.beApp.general.getOnBoardingTextColor(), FontWeight.normal, widget.beApp.general),
-        ),
-        image: Center(
-          child: BeImage(
-            link: page.imageUrl,
-            width: 330,
-            height: 330,
-            fit: BoxFit.cover,
-          ),
-        ),
-      );
-      return model;
-    });
   }
 
   loadAppSettings() async {
@@ -219,12 +159,6 @@ class _SplashAppState extends State<SplashApp> {
       }
     }
     return false;
-  }
-
-  void loadStoreCurrency() async {
-    if (website.isNotEmpty) {
-      storeCurrency = await WooService().getStoreCurrency();
-    }
   }
 }
 

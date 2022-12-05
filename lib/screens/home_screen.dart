@@ -8,30 +8,18 @@ import 'package:be_app_mobile/helpers/font_helper.dart';
 import 'package:be_app_mobile/helpers/social_helper.dart';
 import 'package:be_app_mobile/models/app_options.dart';
 import 'package:be_app_mobile/models/be_app.dart';
-import 'package:be_app_mobile/models/woo_config.dart';
 import 'package:be_app_mobile/offline_settings.dart';
-import 'package:be_app_mobile/screens/items/about_us.dart';
 import 'package:be_app_mobile/screens/items/chat_screen.dart';
 import 'package:be_app_mobile/screens/items/error_page.dart';
-import 'package:be_app_mobile/screens/items/gallery_screen.dart';
-import 'package:be_app_mobile/screens/items/qr_code_screen.dart';
-import 'package:be_app_mobile/screens/items/radio_stream.dart';
 import 'package:be_app_mobile/screens/items/settings/settings_screen.dart';
-import 'package:be_app_mobile/screens/items/video_screen.dart';
 import 'package:be_app_mobile/screens/items/woo_commerce/woo_globals.dart';
-import 'package:be_app_mobile/screens/items/woo_commerce/woo_products.dart';
-import 'package:be_app_mobile/screens/items/wordpress/wp_posts_screen.dart';
-import 'package:be_app_mobile/screens/items/youtube_videos.dart';
 import 'package:be_app_mobile/screens/select_language_screen.dart';
 import 'package:be_app_mobile/screens/side_screen.dart';
-import 'package:be_app_mobile/service/admob_service.dart';
 import 'package:be_app_mobile/service/api_service.dart';
-import 'package:be_app_mobile/service/product_provider.dart';
 import 'package:be_app_mobile/widgets/be_image.dart';
 import 'package:be_app_mobile/widgets/loading.dart';
 import 'package:be_app_mobile/widgets/no_internet.dart';
 import 'package:be_app_mobile/widgets/welcome_popup_widget.dart';
-import 'package:check_vpn_connection/check_vpn_connection.dart';
 import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:floating_action_bubble/floating_action_bubble.dart';
@@ -42,14 +30,10 @@ import 'package:flutter_downloader/flutter_downloader.dart';
 import 'package:flutter_inappwebview/flutter_inappwebview.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:google_mobile_ads/google_mobile_ads.dart';
-import 'package:google_nav_bar/google_nav_bar.dart';
 import 'package:in_app_review/in_app_review.dart';
 import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:permission_handler/permission_handler.dart';
-import 'package:provider/provider.dart';
-import 'package:screen_protector/screen_protector.dart';
 import 'package:share/share.dart';
 import 'package:universal_platform/universal_platform.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -58,16 +42,11 @@ import '../models/general.dart';
 import '../models/localization.dart';
 import '../models/side_item.dart';
 import '../widgets/be_button.dart';
-import '../widgets/vpn_restriction.dart';
-import 'items/feedback_screen.dart';
-import 'items/location_screen.dart';
-import 'items/text_screen.dart';
 
 class MobileScreen extends StatefulWidget {
   final General general;
   final AppOptions appOptions;
-  final WooConfig wooConfig;
-  const MobileScreen({Key? key, required this.general, required this.appOptions, required this.wooConfig}) : super(key: key);
+  const MobileScreen({Key? key, required this.general, required this.appOptions}) : super(key: key);
 
   @override
   _MobileScreenState createState() => _MobileScreenState();
@@ -82,7 +61,6 @@ class _MobileScreenState extends State<MobileScreen> with SingleTickerProviderSt
   final Connectivity _connectivity = Connectivity();
   StreamSubscription<ConnectivityResult>? _connectivitySubscription;
 
-  AdmobService admobService = AdmobService(appleID: "", androidID: "");
   late String title;
   SideItem item = SideItem(title: "Home");
   SideItem previousItem = SideItem(title: "Home");
@@ -94,52 +72,20 @@ class _MobileScreenState extends State<MobileScreen> with SingleTickerProviderSt
   int adCounter = 0;
   int adClicks = 3;
   double webViewHeight = 10;
-  late BannerAd myBanner;
   bool adShow = false;
-  late BannerAd _ad;
   bool isVPNActive = false;
   @override
   initState() {
     WidgetsBinding.instance.addObserver(this);
-    if (widget.general.blockVPNUsers) {
-      checkVPNConnection();
-    }
     if (widget.appOptions.customLocalizations.isNotEmpty) {
       widget.appOptions.localization = mainLocalization.localization;
     }
-    if (widget.general.enabledAdmob && widget.general.enableBanner) {
-      _ad = BannerAd(
-        adUnitId: UniversalPlatform.isAndroid ? widget.general.androidBannerID : widget.general.iOSBannerID,
-        size: AdSize.fullBanner,
-        request: const AdRequest(),
-        listener: BannerAdListener(
-          onAdLoaded: (_) {
-            setState(() {
-              adShow = true;
-            });
-          },
-          onAdFailedToLoad: (ad, error) {
-            // Releases an ad resource when it fails to load
-            ad.dispose();
 
-            debugPrint('Ad load failed (code=${error.code} message=${error.message})');
-          },
-        ),
-      );
-
-      // TODO: Load an ad
-      _ad.load();
-    }
     if (widget.general.enableNoInternetPopup) {
       initConnectivity();
       _connectivitySubscription = _connectivity.onConnectivityChanged.listen(_updateConnectionStatus);
     }
 
-    if (widget.general.enabledAdmob && widget.general.enableInterstitials) {
-      admobService.appleID = widget.general.iOSAdmobID;
-      admobService.androidID = widget.general.androidAdMobID;
-      admobService.createInterstitialAd();
-    }
     title = "";
     item.type = ItemType.home;
     item.link = widget.general.mainURL;
@@ -184,12 +130,6 @@ class _MobileScreenState extends State<MobileScreen> with SingleTickerProviderSt
       APIService().logEvent(AnalyticsType.visitors);
     }
     SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(statusBarColor: widget.general.getStatusColor()));
-
-    if (widget.general.enableScreenSecurity) {
-      ScreenProtector.preventScreenshotOn();
-    } else {
-      ScreenProtector.preventScreenshotOff();
-    }
   }
 
   @override
@@ -207,9 +147,6 @@ class _MobileScreenState extends State<MobileScreen> with SingleTickerProviderSt
     super.didChangeAppLifecycleState(state);
     if (widget.general.reloadWebViewOnBackground) {
       webViewController?.reload();
-    }
-    if (widget.general.blockVPNUsers) {
-      checkVPNConnection();
     }
   }
 
@@ -241,29 +178,6 @@ class _MobileScreenState extends State<MobileScreen> with SingleTickerProviderSt
       return Directionality(textDirection: TextDirection.rtl, child: homeWidget());
     } else {
       return homeWidget();
-    }
-  }
-
-  void blockVPNUser() async {
-    if (isVPNActive == false) {
-      Navigator.push(
-          context,
-          MaterialPageRoute(
-              builder: (context) => VPNRestrictionScreen(
-                    options: widget.appOptions,
-                    general: widget.general,
-                  )));
-    }
-  }
-
-  void checkVPNConnection() async {
-    debugPrint("VPN CHECK ENABLED");
-    if (await CheckVpnConnection.isVpnActive()) {
-      isVPNActive = true;
-      debugPrint("VPN DETECTED... BLOCKING USER");
-      blockVPNUser();
-    } else {
-      isVPNActive = false;
     }
   }
 
@@ -381,11 +295,7 @@ class _MobileScreenState extends State<MobileScreen> with SingleTickerProviderSt
   }
 
   Widget selectedNavBar() {
-    if (widget.general.bottomNavigationType == 1) {
-      return bottomNavigationBar();
-    } else {
-      return classicBottomNavigation();
-    }
+    return classicBottomNavigation();
   }
 
   List<IconButton> navigationButtons() {
@@ -448,41 +358,6 @@ class _MobileScreenState extends State<MobileScreen> with SingleTickerProviderSt
     return buttons;
   }
 
-  Widget bottomNavigationBar() {
-    return Container(
-      decoration: BoxDecoration(
-        color: widget.general.getHeaderColor(),
-        boxShadow: [
-          BoxShadow(
-            blurRadius: 20,
-            color: Colors.black.withOpacity(.1),
-          )
-        ],
-      ),
-      child: SafeArea(
-        child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 12.0, vertical: 5),
-          child: GNav(
-            gap: 5,
-            activeColor: Colors.black,
-            style: GnavStyle.google,
-            iconSize: 15,
-            padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 12),
-            duration: const Duration(milliseconds: 400),
-            tabBackgroundColor: Colors.grey[100]!,
-            color: widget.general.getHeaderColor(),
-            backgroundColor: widget.general.getHeaderColor(),
-            tabs: navItems(),
-            selectedIndex: _selectedIndex,
-            onTabChange: (index) {
-              _onItemTapped(index);
-            },
-          ),
-        ),
-      ),
-    );
-  }
-
   Widget classicBottomNavigation() {
     return BottomNavigationBar(
       items: classicNavItems(),
@@ -533,42 +408,7 @@ class _MobileScreenState extends State<MobileScreen> with SingleTickerProviderSt
   }
 
   Widget mainWidget() {
-    return adShow
-        ? Column(
-            children: [
-              Expanded(child: setSelectedWidget(item)),
-              Container(
-                color: widget.general.getHeaderColor(),
-                width: MediaQuery.of(context).size.width,
-                height: 60.0,
-                alignment: Alignment.center,
-                child: Align(alignment: Alignment.centerLeft, child: AdWidget(ad: _ad)),
-              ),
-            ],
-          )
-        : setSelectedWidget(item);
-  }
-
-  List<GButton> navItems() {
-    if (widget.appOptions.navItems.isNotEmpty) {
-      List<GButton> items = List.generate(widget.appOptions.navItems.length, (index) {
-        return GButton(
-          textColor: widget.general.getHeaderSelectedItemsColor(),
-          hoverColor: widget.general.getHeaderItemsColor(),
-          iconActiveColor: widget.general.getHeaderSelectedItemsColor(),
-          backgroundColor: widget.general.getHeaderColor(),
-          activeBorder: Border.all(color: widget.general.getHeaderSelectedItemsColor()),
-          iconColor: widget.general.getHeaderItemsColor(),
-          icon: widget.appOptions.navItems[index].getSideItemIcon(),
-          text: widget.appOptions.navItems[index].getLocalizedTitle(),
-          textStyle: getFontStyle(13, widget.general.getHeaderSelectedItemsColor(), FontWeight.normal, widget.general),
-        );
-      });
-      return items;
-    } else {
-      List<GButton> items = [];
-      return items;
-    }
+    return setSelectedWidget(item);
   }
 
   List<Bubble> floatingItems() {
@@ -625,7 +465,6 @@ class _MobileScreenState extends State<MobileScreen> with SingleTickerProviderSt
   }
 
   Widget setSelectedWidget(SideItem item) {
-    showInterstitial();
     if (item.type == ItemType.home) {
       checkForLoad(item);
       return Stack(
@@ -658,45 +497,12 @@ class _MobileScreenState extends State<MobileScreen> with SingleTickerProviderSt
           },
           onPageFinish: () {},
           options: widget.appOptions);
-    } else if (item.type == ItemType.text) {
-      return TextComponent(item: item);
     } else if (item.type == ItemType.profile) {
       return SettingsScreen(general: widget.general, options: widget.appOptions);
     } else if (item.type == ItemType.chat) {
       return ChatScreen(
         general: widget.general,
         options: widget.appOptions,
-      );
-    } else if (item.type == ItemType.googleMaps) {
-      return LocationComponent(
-        item: item,
-        options: widget.appOptions,
-        general: widget.general,
-      );
-    } else if (item.type == ItemType.aboutUs) {
-      return AboutUsScreen(
-        item: item,
-        general: widget.general,
-      );
-    } else if (item.type == ItemType.youTubeVideos) {
-      return YouTubeVideos(
-        item: item,
-        general: widget.general,
-      );
-    } else if (item.type == ItemType.wordpress) {
-      return WPPostsScreen(
-        general: widget.general,
-        item: item,
-      );
-    } else if (item.type == ItemType.gallery) {
-      return GalleryScreen(
-        options: widget.appOptions,
-        general: widget.general,
-      );
-    } else if (item.type == ItemType.qrCode) {
-      return QRCodeScreen(
-        options: widget.appOptions,
-        general: widget.general,
       );
     } else if (item.type == ItemType.languages) {
       return SelectLanguageScreen(
@@ -707,33 +513,6 @@ class _MobileScreenState extends State<MobileScreen> with SingleTickerProviderSt
             widget.general.enableRTL = isRTL;
           });
         },
-      );
-    } else if (item.type == ItemType.wooProducts) {
-      BeAppModel appModel = BeAppModel(options: widget.appOptions, general: widget.general);
-      appModel.wooConfig = widget.wooConfig;
-
-      WooProductsScreen wooScreen = WooProductsScreen(
-          key: _wooKey,
-          model: appModel,
-          onProductBack: () {
-            SideItem wooItem = SideItem(title: "woo");
-            wooItem.type == ItemType.wooProducts;
-            if (mounted) {
-              setState(() {
-                item = wooItem;
-              });
-            }
-          },
-          tagID: item.tagID,
-          categoryID: item.categoryID);
-      return MultiProvider(
-        providers: [
-          ChangeNotifierProvider(
-            create: (context) => ProductProvider(),
-            child: wooScreen,
-          )
-        ],
-        child: wooScreen,
       );
     } else if (item.type == ItemType.sideScreen) {
       return SideScreen(
@@ -751,20 +530,6 @@ class _MobileScreenState extends State<MobileScreen> with SingleTickerProviderSt
           }
         },
         item: item,
-      );
-    } else if (item.type == ItemType.videos) {
-      return VideoScreen(
-        general: widget.general,
-      );
-    } else if (item.type == ItemType.radioStreams) {
-      return RadioStream(
-        item: item,
-        general: widget.general,
-      );
-    } else if (item.type == ItemType.feedback) {
-      return FeedbackComponent(
-        item: item,
-        general: widget.general,
       );
     } else if (item.type == ItemType.rateUs) {
       if (widget.general.enabledAnalytics) {
@@ -817,16 +582,6 @@ class _MobileScreenState extends State<MobileScreen> with SingleTickerProviderSt
     }
   }
 
-  showInterstitial() {
-    if (widget.general.enabledAdmob) {
-      adCounter++;
-      if (adCounter >= adClicks) {
-        admobService.showInterstitialAd();
-        adCounter = 0;
-      }
-    }
-  }
-
   Future<void> initConnectivity() async {
     late ConnectivityResult result;
     // Platform messages may fail, so we use a try/catch PlatformException.
@@ -845,9 +600,6 @@ class _MobileScreenState extends State<MobileScreen> with SingleTickerProviderSt
 
   Future<void> _updateConnectionStatus(ConnectivityResult result) async {
     if (mounted) {
-      if (widget.general.blockVPNUsers) {
-        checkVPNConnection();
-      }
       setState(() {
         _connectionStatus = result;
       });

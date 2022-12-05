@@ -7,7 +7,6 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import '../autorization/service/auth_service.dart';
-import '../helpers/shared_service.dart';
 
 class StarterApp extends StatelessWidget {
   StarterApp({Key? key, required this.model}) : super(key: key);
@@ -21,21 +20,8 @@ class StarterApp extends StatelessWidget {
 
   Widget getStartingWidget(BeAppModel model) {
     if (model.general.enableAuthorization) {
-      if (model.wooConfig?.enableWooAuthorization ?? false) {
-        return FutureBuilder(
-            future: SharedService.isLoggedIn(),
-            builder: (BuildContext context, AsyncSnapshot<bool> isLoggedIn) {
-              bool authorized = isLoggedIn.data ?? false;
-              if (authorized) {
-                return SplashApp(beApp: model);
-              } else {
-                return AuthWrapper(model: model);
-              }
-            });
-      } else {
-        return StreamProvider<BeUser?>.value(
-            initialData: BeUser(uid: "", displayName: "", email: ""), value: AuthService().user, child: AuthWrapper(model: model));
-      }
+      return StreamProvider<BeUser?>.value(
+          initialData: BeUser(uid: "", displayName: "", email: ""), value: AuthService().user, child: AuthWrapper(model: model));
     } else {
       return SplashApp(beApp: model);
     }

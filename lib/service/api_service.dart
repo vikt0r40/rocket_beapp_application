@@ -2,7 +2,6 @@ import 'package:be_app_mobile/models/be_analytics.dart';
 import 'package:be_app_mobile/models/be_app.dart';
 import 'package:be_app_mobile/models/be_user.dart';
 import 'package:be_app_mobile/models/message.dart';
-import 'package:be_app_mobile/models/video.dart';
 import 'package:be_app_mobile/offline_settings.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -10,12 +9,9 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:universal_platform/universal_platform.dart';
 
 import '../models/app_options.dart';
-import '../models/feedback.dart';
 import '../models/general.dart';
 import '../models/invite.dart';
 import '../models/side_item.dart';
-import '../models/woo_config.dart';
-import '../screens/items/woo_commerce/woo_globals.dart';
 
 enum AnalyticsType { visitors, userShares, feedbacks, userRates, device }
 
@@ -23,41 +19,9 @@ class APIService {
   final CollectionReference usersCollection = FirebaseFirestore.instance.collection("users");
   final CollectionReference generalSettingsCollection = FirebaseFirestore.instance.collection("settings");
 
-  List<Video> listVideos = <Video>[];
   OfflineSettings offlineSettings = OfflineSettings();
 
-  Future load() async {
-    listVideos = await getVideoList();
-  }
-
-  Future getVideoList() async {
-    if (offlineSettings.enableOfflineMode) {
-      return [];
-    }
-    var data = await FirebaseFirestore.instance.collection("videos").get();
-
-    var videoList = <Video>[];
-    QuerySnapshot<Object?> feedbacks;
-
-    if (data.docs.isEmpty) {
-      return videoList;
-    } else {
-      feedbacks = data;
-    }
-
-    for (var element in feedbacks.docs) {
-      Video video = Video.fromJson(element.data() as Map<dynamic, dynamic>);
-      video.uid = element.reference.id;
-      await video.loadController();
-      videoList.add(video);
-    }
-
-    return videoList.reversed.toList();
-  }
-
-  Future sendFeedback(BeFeedback feedback) async {
-    await FirebaseFirestore.instance.collection("feedbacks").add(feedback.toJson());
-  }
+  Future load() async {}
 
   Future registerUser(User user, String registerType, String name) async {
     await FirebaseFirestore.instance.collection("users").doc(user.uid).set({
@@ -66,10 +30,6 @@ class APIService {
       "email": user.email,
       "type": registerType,
     });
-  }
-
-  Future removeFeedback(BeFeedback feedback) async {
-    await FirebaseFirestore.instance.collection("feedbacks").doc(feedback.uid).delete();
   }
 
   Future<General> getGeneralSettings() async {
@@ -215,12 +175,6 @@ class APIService {
     QuerySnapshot querySnapshot = await FirebaseFirestore.instance.collection("settings").get();
     BeAppModel app = BeAppModel(options: options, general: general);
 
-    app.wooConfig = await getWooConfig();
-    key = app.wooConfig?.wooKey ?? "";
-    website = app.wooConfig?.getWebsiteUrl() ?? "";
-    secret = app.wooConfig?.wooSecret ?? "";
-    stripeSecret = app.wooConfig?.stripeSecretKey ?? "";
-
     if (querySnapshot.docs.isNotEmpty) {
       for (QueryDocumentSnapshot documentSnapshot in querySnapshot.docs) {
         if (documentSnapshot.id == "general") {
@@ -263,18 +217,6 @@ class APIService {
       await FirebaseFirestore.instance.collection("settings").doc("options").update({"items": items.map((v) => v.toJson()).toList()});
     } else {
       await FirebaseFirestore.instance.collection("settings").doc("options").set({"items": items.map((v) => v.toJson()).toList()});
-    }
-  }
-
-  Future<WooConfig> getWooConfig() async {
-    if (offlineSettings.enableOfflineMode) {
-      return offlineSettings.getWooCommerceSettings();
-    }
-    DocumentSnapshot<Object?> snapshot = await FirebaseFirestore.instance.collection("woo_commerce").doc("settings").get();
-    if (snapshot.data() == null) {
-      return WooConfig();
-    } else {
-      return WooConfig.fromJson(snapshot.data() as Map<dynamic, dynamic>);
     }
   }
 

@@ -2,7 +2,6 @@ import 'dart:convert';
 
 import 'package:be_app_mobile/models/app_options.dart';
 import 'package:be_app_mobile/models/general.dart';
-import 'package:be_app_mobile/models/woo_config.dart';
 
 import 'models/localization.dart';
 import 'models/onboaring_page.dart';
@@ -97,9 +96,5 @@ class OfflineSettings {
       helper.localization = Localization.fromJson(itemsMaps["localizations"]);
     }
     return helper;
-  }
-
-  WooConfig getWooCommerceSettings() {
-    return WooConfig.fromJson(json.decode(wooCommerceSettings));
   }
 }
