@@ -9,14 +9,12 @@ import 'package:be_app_mobile/helpers/social_helper.dart';
 import 'package:be_app_mobile/models/app_options.dart';
 import 'package:be_app_mobile/models/be_app.dart';
 import 'package:be_app_mobile/models/woo_config.dart';
-import 'package:be_app_mobile/offline_settings.dart';
 import 'package:be_app_mobile/screens/items/about_us.dart';
 import 'package:be_app_mobile/screens/items/chat_screen.dart';
 import 'package:be_app_mobile/screens/items/error_page.dart';
 import 'package:be_app_mobile/screens/items/gallery_screen.dart';
 import 'package:be_app_mobile/screens/items/qr_code_screen.dart';
 import 'package:be_app_mobile/screens/items/radio_stream.dart';
-import 'package:be_app_mobile/screens/items/settings/settings_screen.dart';
 import 'package:be_app_mobile/screens/items/video_screen.dart';
 import 'package:be_app_mobile/screens/items/woo_commerce/woo_globals.dart';
 import 'package:be_app_mobile/screens/items/woo_commerce/woo_products.dart';
@@ -33,7 +31,6 @@ import 'package:be_app_mobile/widgets/no_internet.dart';
 import 'package:be_app_mobile/widgets/welcome_popup_widget.dart';
 import 'package:check_vpn_connection/check_vpn_connection.dart';
 import 'package:connectivity_plus/connectivity_plus.dart';
-import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:floating_action_bubble/floating_action_bubble.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -49,7 +46,6 @@ import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:provider/provider.dart';
-import 'package:screen_protector/screen_protector.dart';
 import 'package:share/share.dart';
 import 'package:universal_platform/universal_platform.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -75,7 +71,6 @@ class MobileScreen extends StatefulWidget {
 
 class _MobileScreenState extends State<MobileScreen> with SingleTickerProviderStateMixin, WidgetsBindingObserver {
   bool isLoading = true;
-  late FirebaseMessaging messaging;
   final GlobalKey _wooKey = GlobalKey();
   InAppWebViewController? webViewController;
   ConnectivityResult _connectionStatus = ConnectivityResult.wifi;
@@ -152,44 +147,12 @@ class _MobileScreenState extends State<MobileScreen> with SingleTickerProviderSt
     _animation = Tween<double>(begin: 0, end: 1).animate(curvedAnimation);
     super.initState();
     // if (UniversalPlatform.isAndroid) WebView.platform = AndroidWebView();
-    OfflineSettings settings = OfflineSettings();
-    if (settings.enableOfflineMode == false) {
-      messaging = FirebaseMessaging.instance;
-      messaging.getToken().then((value) {
-        messaging.subscribeToTopic("messaging");
-      });
 
-      FirebaseMessaging.onMessage.listen((RemoteMessage event) {
-        showDialog(
-            context: context,
-            builder: (BuildContext context) {
-              return AlertDialog(
-                title: Text(event.notification!.title ?? "Notification"),
-                content: Text(event.notification!.body!),
-                actions: [
-                  TextButton(
-                    child: Text(mainLocalization.localization.gotItThankYou),
-                    onPressed: () {
-                      Navigator.of(context).pop();
-                    },
-                  )
-                ],
-              );
-            });
-      });
-      FirebaseMessaging.onMessageOpenedApp.listen((message) {});
-    }
     showWelcomePopup();
     if (widget.general.enabledAnalytics) {
       APIService().logEvent(AnalyticsType.visitors);
     }
     SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(statusBarColor: widget.general.getStatusColor()));
-
-    if (widget.general.enableScreenSecurity) {
-      ScreenProtector.preventScreenshotOn();
-    } else {
-      ScreenProtector.preventScreenshotOff();
-    }
   }
 
   @override
@@ -660,8 +623,6 @@ class _MobileScreenState extends State<MobileScreen> with SingleTickerProviderSt
           options: widget.appOptions);
     } else if (item.type == ItemType.text) {
       return TextComponent(item: item);
-    } else if (item.type == ItemType.profile) {
-      return SettingsScreen(general: widget.general, options: widget.appOptions);
     } else if (item.type == ItemType.chat) {
       return ChatScreen(
         general: widget.general,

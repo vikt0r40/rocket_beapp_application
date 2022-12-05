@@ -41,29 +41,27 @@ class _QRCodeScreenState extends State<QRCodeScreen> {
     return Stack(
       children: [
         MobileScanner(
+            allowDuplicates: true,
             controller: cameraController,
-            onDetect: (capture) {
-              for (Barcode barcode in capture.barcodes) {
-                final String? code = barcode.rawValue;
-                bool validURL = Uri.tryParse(code ?? "")?.hasAbsolutePath ?? false;
-
-                if (validURL) {
-                  setState(() {
-                    hasURL = validURL;
-                    urlFound = code ?? "";
-                  });
-                } else if (code!.contains("VCARD")) {
-                  setState(() {
-                    hasVCard = true;
-                    var mainContact = Contact.fromVCard(code);
-                    contact = BeContact().fromContact(mainContact);
-                  });
-                } else {
-                  setState(() {
-                    hasText = true;
-                    textMessage = code;
-                  });
-                }
+            onDetect: (barcode, args) {
+              final String? code = barcode.rawValue;
+              String text = code ?? "";
+              if (text.startsWith("https") || text.startsWith("http") || text.startsWith("www")) {
+                setState(() {
+                  hasURL = true;
+                  urlFound = code ?? "";
+                });
+              } else if (code!.contains("VCARD")) {
+                setState(() {
+                  hasVCard = true;
+                  var mainContact = Contact.fromVCard(code);
+                  contact = BeContact().fromContact(mainContact);
+                });
+              } else {
+                setState(() {
+                  hasText = true;
+                  textMessage = code;
+                });
               }
             }),
         Padding(

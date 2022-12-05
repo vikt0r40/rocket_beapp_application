@@ -32,7 +32,7 @@ class _LoginPageState extends State<LoginPage> {
   void initState() {
     // TODO: implement initState
     _emailController.text = "demo@mavericslabs.com";
-    _passwordController.text = "123456";
+    _passwordController.text = "qa123456";
     super.initState();
     _auth = AuthService();
     _auth.localize = widget.model.options.localization;

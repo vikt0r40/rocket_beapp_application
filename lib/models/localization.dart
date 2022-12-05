@@ -24,7 +24,6 @@ class Localization {
   String authLoginToYourAccount = "Login to your account.";
   String authThisFieldCantBeEmpty = "This field can't be empty";
   String authEmail = "E-mail";
-  String authInviteCode = "Invitation Code";
   String authPass = "Password";
   String authForgotPass = "Forgot Password?";
   String authSignIn = "Sign in";
@@ -33,7 +32,6 @@ class Localization {
   String authDontHaveAccount = "Don't have an account?";
   String authSignUp = "Sign up";
   String authInvalidPassword = "The password is invalid or the user does not have password";
-  String authInvitationCodeInvalid = "This invitation code is invalid or already used";
   String authEmailRequired = "Email is required";
   String authFullName = "Full name";
   String authFillForm = "Please fill the form to continue";
@@ -130,7 +128,6 @@ class Localization {
     wooOr = json['wooOr'] ?? "or";
     wooOrderSuccess = json['wooOrderSuccess'] ?? "Order success! Thank you for being our customer!";
     wooShippingAddress = json['wooShippingAddress'] ?? "Shipping address";
-    authInvitationCodeInvalid = json['authInvitationCodeInvalid'] ?? "This invitation code is invalid or already used";
 
     yesButton = json['yesButton'] ?? "Yes";
     noButton = json['noButton'] ?? "No";
@@ -155,7 +152,6 @@ class Localization {
     authResetEmail = json["authResetEmail"] ?? "Reset email is sent!";
     authEmailNotFound = json["authEmailNotFound"] ?? "Email not found";
     authAccountExist = json["authAccountExist"] ?? "Account already exist, but with different login type";
-    authInviteCode = json["authInviteCode"] ?? "Invitation Code";
 
     skip = json["skip"] ?? "Skip";
     continueText = json["continueText"] ?? "Continue";
@@ -179,7 +175,6 @@ class Localization {
   }
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = <String, dynamic>{};
-    data['authInvitationCodeInvalid'] = authInvitationCodeInvalid;
     data['feedbackTitle'] = feedbackTitle;
     data['feedbackName'] = feedbackName;
     data['feedbackEmail'] = feedbackEmail;
@@ -249,7 +244,6 @@ class Localization {
     data['authResetEmail'] = authResetEmail;
     data['authEmailNotFound'] = authEmailNotFound;
     data['authAccountExist'] = authAccountExist;
-    data['authInviteCode'] = authInviteCode;
     data['yesButton'] = yesButton;
     data['noButton'] = noButton;
     data['exitMessageTitle'] = exitMessageTitle;

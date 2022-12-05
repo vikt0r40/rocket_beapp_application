@@ -1,6 +1,5 @@
 import 'package:be_app_mobile/models/be_analytics.dart';
 import 'package:be_app_mobile/models/be_app.dart';
-import 'package:be_app_mobile/models/be_user.dart';
 import 'package:be_app_mobile/models/message.dart';
 import 'package:be_app_mobile/models/video.dart';
 import 'package:be_app_mobile/offline_settings.dart';
@@ -12,7 +11,6 @@ import 'package:universal_platform/universal_platform.dart';
 import '../models/app_options.dart';
 import '../models/feedback.dart';
 import '../models/general.dart';
-import '../models/invite.dart';
 import '../models/side_item.dart';
 import '../models/woo_config.dart';
 import '../screens/items/woo_commerce/woo_globals.dart';
@@ -20,9 +18,6 @@ import '../screens/items/woo_commerce/woo_globals.dart';
 enum AnalyticsType { visitors, userShares, feedbacks, userRates, device }
 
 class APIService {
-  final CollectionReference usersCollection = FirebaseFirestore.instance.collection("users");
-  final CollectionReference generalSettingsCollection = FirebaseFirestore.instance.collection("settings");
-
   List<Video> listVideos = <Video>[];
   OfflineSettings offlineSettings = OfflineSettings();
 
@@ -132,15 +127,6 @@ class APIService {
         .collection("conversations")
         .doc(userId)
         .set({"messages": messages.map((v) => v.toJson()).toList(), "user_name": username});
-  }
-
-  Future updateInvites(List<Invite> items) async {
-    bool keyExist = await checkIfKeyExist("items");
-    if (keyExist) {
-      await generalSettingsCollection.doc("options").update({"invites": items.map((v) => v.toJson()).toList()});
-    } else {
-      await generalSettingsCollection.doc("options").set({"invites": items.map((v) => v.toJson()).toList()});
-    }
   }
 
   Future<AppOptions> getSideItems() async {
@@ -285,26 +271,5 @@ class APIService {
     } else {
       return false;
     }
-  }
-
-  updateUserSettings() async {
-    BeUser user = await getUserSettings();
-    await usersCollection.doc(FirebaseAuth.instance.currentUser?.uid ?? "").set(user.toJson());
-  }
-
-  updateUserSettingsWithUser(BeUser user) async {
-    await usersCollection.doc(FirebaseAuth.instance.currentUser?.uid ?? "").set(user.toJson());
-  }
-
-  Future<BeUser> getUserSettings() async {
-    DocumentSnapshot<Object?> snapshot = await usersCollection.doc(FirebaseAuth.instance.currentUser?.uid ?? "").get();
-
-    if (snapshot.data() == null) {
-      return BeUser(uid: "", displayName: "", email: "");
-    }
-
-    Map<dynamic, dynamic> itemsMaps = snapshot.data() as Map<dynamic, dynamic>;
-
-    return BeUser.fromJson(itemsMaps);
   }
 }

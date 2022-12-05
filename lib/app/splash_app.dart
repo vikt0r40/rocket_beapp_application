@@ -12,6 +12,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_native_splash/flutter_native_splash.dart';
 import 'package:introduction_screen/introduction_screen.dart';
+import 'package:onesignal_flutter/onesignal_flutter.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -45,6 +46,7 @@ class _SplashAppState extends State<SplashApp> {
     super.initState();
     loadStoreCurrency();
     loadAppSettings();
+    OneSignal.shared.setAppId(widget.beApp.general.oneSignalAppID);
     checkForPermissions();
   }
 

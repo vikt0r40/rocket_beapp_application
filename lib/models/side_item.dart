@@ -27,7 +27,6 @@ enum ItemType {
   appointments,
   languages,
   signOut,
-  profile,
 }
 
 class SideItem {

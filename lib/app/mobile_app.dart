@@ -5,8 +5,8 @@ import 'package:be_app_mobile/widgets/be_construction.dart';
 import 'package:be_app_mobile/widgets/demo_widget.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_windowmanager/flutter_windowmanager.dart';
 import 'package:google_mobile_ads/google_mobile_ads.dart';
-import 'package:screen_protector/screen_protector.dart';
 
 import '../models/app_options.dart';
 import '../models/general.dart';
@@ -30,9 +30,7 @@ class _BeAppState extends State<BeApp> {
       MobileAds.instance.initialize();
     }
     if (widget.beAppModel.general.enableScreenSecurity) {
-      ScreenProtector.preventScreenshotOn();
-    } else {
-      ScreenProtector.preventScreenshotOff();
+      FlutterWindowManager.addFlags(FlutterWindowManager.FLAG_SECURE);
     }
     super.initState();
   }
