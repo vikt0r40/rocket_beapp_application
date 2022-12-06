@@ -165,6 +165,7 @@ class APIService {
   }
 
   Future<BeAppModel> getAppConfiguration() async {
+    print("1");
     if (offlineSettings.enableOfflineMode) {
       BeAppModel model = BeAppModel(options: offlineSettings.getApplicationSettings(), general: offlineSettings.getGeneralSettings());
       return model;
@@ -178,12 +179,15 @@ class APIService {
     if (querySnapshot.docs.isNotEmpty) {
       for (QueryDocumentSnapshot documentSnapshot in querySnapshot.docs) {
         if (documentSnapshot.id == "general") {
+          print("2");
           app.general = General.fromJson(documentSnapshot.data() as Map<dynamic, dynamic>);
         }
         if (documentSnapshot.id == "options") {
+          print("3");
           app.options = AppOptions.fromJson(documentSnapshot.data() as Map<dynamic, dynamic>);
         }
       }
+      print("4");
       return app;
     }
     return app;

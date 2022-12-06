@@ -136,7 +136,6 @@ class General {
     enableRefreshOnNavigation = json['enableRefreshOnNavigation'] ?? false;
     floatingMenuRGB = json['floatingMenuRGB'].cast<int>();
     floatingIconRGB = json['floatingIconRGB'].cast<int>();
-    enabledAdmob = json['enabledAdmob'];
     enabledAnalytics = json['enabledAnalytics'];
     enableSideMenu = json['enableSideMenu'];
     enableFloatingButton = json['enableFloatingButton'];
@@ -144,7 +143,7 @@ class General {
     enableCustomJavascript = json['enableCustomJavascript'];
     enableRTL = json['enableRTL'] ?? false;
     customJavascriptCode = json['customJavascriptCode'];
-    sideMenuDirection = SlideDirection.values[json["sideMenuDirection"]];
+
     logoUrl = json['logoUrl'] ??
         "https://firebasestorage.googleapis.com/v0/b/mini-football-manager-7512c.appspot.com/o/images%2Fb0312cf0-ac1b-11ec-81b4-9b5036bc270d?alt=media&token=1e319587-15d2-4f24-b3cf-a2b0e3ddb1d5";
     if (json['enableNoInternetPopup'] != null) {
@@ -171,12 +170,7 @@ class General {
     if (json['applicationColor'] != null) {
       applicationColor = json['applicationColor'].cast<int>() ?? [255, 255, 255];
     }
-    if (json['onBoardingRGB'] != null) {
-      onBoardingRGB = json['onBoardingRGB'].cast<int>() ?? [255, 255, 255];
-    }
-    if (json['onBoardingTextRGB'] != null) {
-      onBoardingTextRGB = json['onBoardingTextRGB'].cast<int>() ?? [0, 0, 0];
-    }
+
     loadingSize = json['loadingSize'] ?? 30;
     androidAdMobID = json['androidAdMobID'] ?? "";
     iOSAdmobID = json['iOSAdmobID'] ?? "";

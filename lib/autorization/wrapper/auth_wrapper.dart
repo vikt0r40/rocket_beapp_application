@@ -13,8 +13,8 @@ class AuthWrapper extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final user = Provider.of<BeUser?>(context);
+    FlutterNativeSplash.remove();
     if (user == null) {
-      FlutterNativeSplash.remove();
       return LoginPage(model: model);
     } else {
       return SplashApp(beApp: model);

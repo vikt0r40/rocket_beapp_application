@@ -20,11 +20,6 @@ class _ServiceWidgetState extends State<ServiceWidget> {
 
   @override
   Widget build(BuildContext context) {
-    if (settings.enableOfflineMode) {
-      BeAppModel beAppModel = BeAppModel(options: settings.getApplicationSettings(), general: settings.getGeneralSettings());
-      beAppModel.general.enableAuthorization = false;
-      return StarterApp(model: beAppModel);
-    }
     return FutureBuilder(
         future: APIService().getAppConfiguration(),
         builder: (BuildContext context, AsyncSnapshot<BeAppModel> snapshot) {
