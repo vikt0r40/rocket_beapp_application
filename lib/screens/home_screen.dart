@@ -96,6 +96,7 @@ class _MobileScreenState extends State<MobileScreen> with SingleTickerProviderSt
   int adClicks = 3;
   double webViewHeight = 10;
   late BannerAd myBanner;
+  late StreamSubscription<bool> keyboardSubscription;
   bool adShow = false;
   late BannerAd _ad;
   bool isVPNActive = false;
@@ -152,6 +153,12 @@ class _MobileScreenState extends State<MobileScreen> with SingleTickerProviderSt
     final curvedAnimation = CurvedAnimation(curve: Curves.easeInOut, parent: _animationController);
     _animation = Tween<double>(begin: 0, end: 1).animate(curvedAnimation);
     super.initState();
+    var keyboardVisibilityController = KeyboardVisibilityController();
+    keyboardSubscription = keyboardVisibilityController.onChange.listen((bool visible) async {
+      Future.delayed(const Duration(milliseconds: 300), () {
+        webViewController?.android.pageDown(bottom: true);
+      });
+    });
     // if (UniversalPlatform.isAndroid) WebView.platform = AndroidWebView();
     OfflineSettings settings = OfflineSettings();
     if (settings.enableOfflineMode == false) {
@@ -973,7 +980,6 @@ class _BeWebViewState extends State<BeWebView> {
   InAppWebViewGroupOptions options = InAppWebViewGroupOptions();
   String token = "";
   SocialHelper socialHelper = SocialHelper();
-  late StreamSubscription<bool> keyboardSubscription;
 
   @override
   void initState() {
@@ -982,11 +988,6 @@ class _BeWebViewState extends State<BeWebView> {
       isLoading = false;
     }
     super.initState();
-    var keyboardVisibilityController = KeyboardVisibilityController();
-    keyboardSubscription = keyboardVisibilityController.onChange.listen((bool visible) async {
-      sleep(const Duration(milliseconds: 300));
-      webViewController?.android.pageDown(bottom: true);
-    });
 
     options = InAppWebViewGroupOptions(
         crossPlatform: InAppWebViewOptions(
