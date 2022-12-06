@@ -102,7 +102,7 @@ class General {
     reloadWebViewOnBackground = json['reloadWebViewOnBackground'] ?? false;
     oneSignalAppID = json['oneSignalAppID'] ?? "";
     oneSignalRestApi = json['oneSignalRestApi'] ?? "";
-    enableScreenSecurity = json['enableExitApp'] ?? false;
+    enableScreenSecurity = json['enableScreenSecurity'] ?? false;
     enableExitApp = json['enableExitApp'] ?? false;
     enableToastOnJsAlerts = json['enableToastOnJsAlerts'] ?? true;
     enableCenterTitlesSideScreen = json['enableCenterTitlesSideScreen'] ?? false;
