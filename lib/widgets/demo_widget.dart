@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 import '../screens/home_screen.dart';
+import '../screens/items/woo_commerce/woo_globals.dart';
 
 class DemoWidget extends StatefulWidget {
   const DemoWidget({Key? key, required this.model}) : super(key: key);
@@ -120,7 +121,6 @@ class _DemoWidgetState extends State<DemoWidget> {
       addSwitcher("Enable Pinch Zoom", enablePinchZoom),
       addSwitcher("Enable Cookies", enableCookies),
       addSwitcher("Enable Multi Window", enableMultiWindow),
-      addSwitcher("Enable AdMob Banner", enableBanner),
       addSwitcher("Reload WebView on Background", reloadOnBackground),
       addSwitcher("Enable Horizontal Scroll", enableHorizontalScroll),
     ]);
@@ -141,6 +141,7 @@ class _DemoWidgetState extends State<DemoWidget> {
     widget.model.general.enableTopNavigation = enableTopBar.isEnabled;
     widget.model.general.enableSafeArea = enableSafeArea.isEnabled;
     widget.model.general.enableRTL = enableRTL.isEnabled;
+    isRTL = enableRTL.isEnabled;
     widget.model.general.enablePinchZoom = enablePinchZoom.isEnabled;
     widget.model.general.enableCookies = enableCookies.isEnabled;
     widget.model.general.enableMultiWindow = enableMultiWindow.isEnabled;

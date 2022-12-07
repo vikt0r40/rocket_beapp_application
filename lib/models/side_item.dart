@@ -50,14 +50,7 @@ class SideItem {
     link = json["link"] ?? "";
     address = json["address"] ?? "";
     customJS = json["customJS"] ?? "";
-    for (ItemType type in ItemType.values) {
-      if (type == json["type"]) {
-        type = ItemType.values[json["type"]];
-        break;
-      } else {
-        type = ItemType.home;
-      }
-    }
+    type = ItemType.values[json["type"]];
     iconCode = json["iconCode"] ?? "";
     fontFamily = json['fontFamily'] ?? "";
     categoryID = json['categoryID'] ?? "";

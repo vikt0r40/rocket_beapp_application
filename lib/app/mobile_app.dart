@@ -28,7 +28,7 @@ class _BeAppState extends State<BeApp> {
 
   @override
   Widget build(BuildContext context) {
-    return releaseApp();
+    return demoApp();
   }
 
   Widget releaseApp() {

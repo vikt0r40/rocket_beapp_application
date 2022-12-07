@@ -87,7 +87,6 @@ class _MobileScreenState extends State<MobileScreen> with SingleTickerProviderSt
     }
 
     title = "";
-    item.type = ItemType.home;
     item.link = widget.general.mainURL;
     _animationController = AnimationController(
       vsync: this,
@@ -408,6 +407,7 @@ class _MobileScreenState extends State<MobileScreen> with SingleTickerProviderSt
   }
 
   Widget mainWidget() {
+    print(item.type);
     return setSelectedWidget(item);
   }
 
