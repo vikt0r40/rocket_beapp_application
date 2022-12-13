@@ -49,7 +49,7 @@ class _LoginPageState extends State<LoginPage> {
 
   Widget mainWidget() {
     return Scaffold(
-      backgroundColor: Colors.black,
+      backgroundColor: widget.model.general.getAuthBackgroundColor(),
       resizeToAvoidBottomInset: true,
       body: SafeArea(
         child: Padding(
@@ -60,13 +60,13 @@ class _LoginPageState extends State<LoginPage> {
               children: [
                 Text(
                   _auth.localize.authLetsGetYouIn,
-                  style: getFontStyle(FontSize.xxLarge, ThemeColors.whiteTextColor, FontWeight.w600, widget.model.general),
+                  style: getFontStyle(FontSize.xxLarge, widget.model.general.getAuthTitleColor(), FontWeight.w600, widget.model.general),
                 ),
                 Padding(
                   padding: const EdgeInsets.only(top: 7),
                   child: Text(
                     _auth.localize.authLoginToYourAccount,
-                    style: getFontStyle(FontSize.medium, ThemeColors.greyTextColor, FontWeight.w600, widget.model.general),
+                    style: getFontStyle(FontSize.medium, widget.model.general.getAuthSubtitleColor(), FontWeight.w600, widget.model.general),
                   ),
                 ),
                 const SizedBox(height: 70),
@@ -85,11 +85,11 @@ class _LoginPageState extends State<LoginPage> {
                             }
                             return null;
                           },
-                          style: getFontStyle(14, ThemeColors.whiteTextColor, FontWeight.normal, widget.model.general),
+                          style: getFontStyle(14, widget.model.general.getAuthTextFieldTextColor(), FontWeight.normal, widget.model.general),
                           keyboardType: TextInputType.emailAddress,
-                          cursorColor: ThemeColors.primaryColor,
+                          cursorColor: widget.model.general.getAuthTextFieldTextColor(),
                           decoration: InputDecoration(
-                            fillColor: ThemeColors.textFieldBgColor,
+                            fillColor: widget.model.general.getAuthTextFieldColor(),
                             filled: true,
                             hintText: _auth.localize.authEmail,
                             hintStyle: getFontStyle(FontSize.medium, ThemeColors.textFieldHintColor, FontWeight.w400, widget.model.general),
@@ -114,11 +114,11 @@ class _LoginPageState extends State<LoginPage> {
                             return null;
                           },
                           obscureText: true,
-                          style: getFontStyle(14, ThemeColors.whiteTextColor, FontWeight.normal, widget.model.general),
+                          style: getFontStyle(14, widget.model.general.getAuthTextFieldTextColor(), FontWeight.normal, widget.model.general),
                           keyboardType: TextInputType.visiblePassword,
-                          cursorColor: ThemeColors.primaryColor,
+                          cursorColor: widget.model.general.getAuthTextFieldTextColor(),
                           decoration: InputDecoration(
-                            fillColor: ThemeColors.textFieldBgColor,
+                            fillColor: widget.model.general.getAuthTextFieldColor(),
                             filled: true,
                             hintText: _auth.localize.authPass,
                             hintStyle: getFontStyle(FontSize.medium, ThemeColors.textFieldHintColor, FontWeight.w400, widget.model.general),
@@ -141,7 +141,8 @@ class _LoginPageState extends State<LoginPage> {
                               },
                               child: Text(
                                 _auth.localize.authForgotPass,
-                                style: getFontStyle(FontSize.medium, ThemeColors.greyTextColor, FontWeight.w600, widget.model.general),
+                                style:
+                                    getFontStyle(FontSize.medium, widget.model.general.getAuthSubtitleColor(), FontWeight.w600, widget.model.general),
                               ),
                             ),
                           ),
@@ -152,6 +153,8 @@ class _LoginPageState extends State<LoginPage> {
                         visible: widget.model.general.enableEmailLogin,
                         child: MainButton(
                           text: _auth.localize.authSignIn,
+                          backgroundColor: widget.model.general.getAuthButtonColor(),
+                          textColor: widget.model.general.getAuthButtonTextColor(),
                           onTap: () {
                             _formKey.currentState!.validate();
                             if (widget.model.wooConfig?.enableWooAuthorization ?? false) {
@@ -203,7 +206,7 @@ class _LoginPageState extends State<LoginPage> {
                       children: [
                         Text(
                           "${_auth.localize.authDontHaveAccount} ",
-                          style: getFontStyle(FontSize.medium, ThemeColors.whiteTextColor, FontWeight.w600, widget.model.general),
+                          style: getFontStyle(FontSize.medium, widget.model.general.getAuthFooterColor(), FontWeight.w600, widget.model.general),
                         ),
                         GestureDetector(
                           onTap: () => Navigator.push(
@@ -216,7 +219,7 @@ class _LoginPageState extends State<LoginPage> {
                           ),
                           child: Text(
                             _auth.localize.authSignUp,
-                            style: getFontStyle(FontSize.medium, ThemeColors.primaryColor, FontWeight.w600, widget.model.general),
+                            style: getFontStyle(FontSize.medium, widget.model.general.getAuthButtonColor(), FontWeight.w600, widget.model.general),
                           ),
                         ),
                       ],

@@ -133,7 +133,7 @@ class _SplashAppState extends State<SplashApp> {
         moveToApp();
       },
       showBackButton: false,
-      showSkipButton: true,
+      showSkipButton: widget.beApp.general.enableSkip,
       showNextButton: false,
       skip: Text(
         mainLocalization.localization.skip,

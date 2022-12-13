@@ -55,6 +55,8 @@ TextStyle getFontStyle(double? fontSize, Color? color, FontWeight? fontWeight, G
     return GoogleFonts.archivo(fontSize: fontSize, color: color, fontWeight: fontWeight);
   } else if (general.fontName == "Alice") {
     return GoogleFonts.alice(fontSize: fontSize, color: color, fontWeight: fontWeight);
+  } else if (general.fontName == "Inter") {
+    return GoogleFonts.inter(fontSize: fontSize, color: color, fontWeight: fontWeight);
   } else {
     return GoogleFonts.roboto(fontSize: fontSize, color: color, fontWeight: fontWeight);
   }

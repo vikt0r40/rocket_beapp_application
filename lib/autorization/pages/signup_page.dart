@@ -39,9 +39,9 @@ class _SignUpPageState extends State<SignUpPage> {
 
   Widget mainWidget() {
     return Scaffold(
-      backgroundColor: Colors.black,
+      backgroundColor: widget.model.general.getAuthBackgroundColor(),
       appBar: AppBar(
-        backgroundColor: ThemeColors.scaffoldBgColor,
+        backgroundColor: widget.model.general.getAuthBackgroundColor(),
         elevation: 0,
       ),
       body: isLoading == true
@@ -69,13 +69,13 @@ class _SignUpPageState extends State<SignUpPage> {
             children: [
               Text(
                 mainLocalization.localization.authNewHere,
-                style: getFontStyle(FontSize.xxLarge, ThemeColors.whiteTextColor, FontWeight.w600, widget.model.general),
+                style: getFontStyle(FontSize.xxLarge, widget.model.general.getAuthTitleColor(), FontWeight.w600, widget.model.general),
               ),
               Padding(
                 padding: const EdgeInsets.only(top: 7),
                 child: Text(
                   mainLocalization.localization.authFillForm,
-                  style: getFontStyle(FontSize.medium, ThemeColors.greyTextColor, FontWeight.w600, widget.model.general),
+                  style: getFontStyle(FontSize.medium, widget.model.general.getAuthSubtitleColor(), FontWeight.w600, widget.model.general),
                 ),
               ),
               const SizedBox(height: 70),
@@ -92,11 +92,11 @@ class _SignUpPageState extends State<SignUpPage> {
                         }
                         return null;
                       },
-                      style: getFontStyle(14, ThemeColors.whiteTextColor, FontWeight.normal, widget.model.general),
+                      style: getFontStyle(14, widget.model.general.getAuthTextFieldTextColor(), FontWeight.normal, widget.model.general),
                       keyboardType: TextInputType.name,
-                      cursorColor: ThemeColors.primaryColor,
+                      cursorColor: widget.model.general.getAuthTextFieldTextColor(),
                       decoration: InputDecoration(
-                        fillColor: ThemeColors.textFieldBgColor,
+                        fillColor: widget.model.general.getAuthTextFieldColor(),
                         filled: true,
                         hintText: mainLocalization.localization.authFullName,
                         hintStyle: getFontStyle(FontSize.medium, ThemeColors.textFieldHintColor, FontWeight.w400, widget.model.general),
@@ -117,11 +117,11 @@ class _SignUpPageState extends State<SignUpPage> {
                         }
                         return null;
                       },
-                      style: getFontStyle(14, ThemeColors.whiteTextColor, FontWeight.normal, widget.model.general),
-                      cursorColor: ThemeColors.primaryColor,
+                      style: getFontStyle(14, widget.model.general.getAuthTextFieldTextColor(), FontWeight.normal, widget.model.general),
+                      cursorColor: widget.model.general.getAuthTextFieldTextColor(),
                       keyboardType: TextInputType.emailAddress,
                       decoration: InputDecoration(
-                        fillColor: ThemeColors.textFieldBgColor,
+                        fillColor: widget.model.general.getAuthTextFieldColor(),
                         filled: true,
                         hintText: mainLocalization.localization.authEmail,
                         hintStyle: getFontStyle(FontSize.medium, ThemeColors.textFieldHintColor, FontWeight.w400, widget.model.general),
@@ -143,11 +143,11 @@ class _SignUpPageState extends State<SignUpPage> {
                         return null;
                       },
                       obscureText: true,
-                      style: getFontStyle(14, ThemeColors.whiteTextColor, FontWeight.normal, widget.model.general),
+                      style: getFontStyle(14, widget.model.general.getAuthTextFieldTextColor(), FontWeight.normal, widget.model.general),
                       keyboardType: TextInputType.visiblePassword,
-                      cursorColor: ThemeColors.primaryColor,
+                      cursorColor: widget.model.general.getAuthTextFieldTextColor(),
                       decoration: InputDecoration(
-                        fillColor: ThemeColors.textFieldBgColor,
+                        fillColor: widget.model.general.getAuthTextFieldColor(),
                         filled: true,
                         hintText: mainLocalization.localization.authPass,
                         hintStyle: getFontStyle(FontSize.medium, ThemeColors.textFieldHintColor, FontWeight.w400, widget.model.general),
@@ -170,11 +170,11 @@ class _SignUpPageState extends State<SignUpPage> {
                               }
                               return null;
                             },
-                            style: getFontStyle(14, ThemeColors.whiteTextColor, FontWeight.normal, widget.model.general),
-                            cursorColor: ThemeColors.primaryColor,
+                            style: getFontStyle(14, widget.model.general.getAuthTextFieldTextColor(), FontWeight.normal, widget.model.general),
+                            cursorColor: widget.model.general.getAuthTextFieldTextColor(),
                             keyboardType: TextInputType.text,
                             decoration: InputDecoration(
-                              fillColor: ThemeColors.textFieldBgColor,
+                              fillColor: widget.model.general.getAuthTextFieldColor(),
                               filled: true,
                               hintText: mainLocalization.localization.authInviteCode,
                               hintStyle: getFontStyle(FontSize.medium, ThemeColors.textFieldHintColor, FontWeight.w400, widget.model.general),
@@ -190,6 +190,8 @@ class _SignUpPageState extends State<SignUpPage> {
                     const SizedBox(height: 70),
                     MainButton(
                       text: mainLocalization.localization.authSignUp,
+                      backgroundColor: widget.model.general.getAuthButtonColor(),
+                      textColor: widget.model.general.getAuthButtonTextColor(),
                       onTap: () {
                         _formKey.currentState!.validate();
                         if (widget.model.wooConfig?.enableWooAuthorization ?? false) {

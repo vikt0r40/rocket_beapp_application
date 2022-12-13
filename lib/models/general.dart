@@ -19,12 +19,14 @@ class General {
   List<int> androidSystemButtonsColor = [0, 0, 0];
   List<int> onBoardingRGB = [0, 0, 0];
   List<int> onBoardingTextRGB = [255, 255, 255];
+  List<int> loadingBackgroundRGB = [255, 255, 255];
   bool enableRefreshOnNavigation = false;
   bool enableShare = true;
   bool enableTopNavigation = true;
   bool centerTopTitle = true;
   bool enabledAdmob = false;
   bool blockVPNUsers = false;
+  bool enableSkip = true;
   bool enabledAnalytics = true;
   bool enableSideMenu = true;
   bool enableBottomNavigation = true;
@@ -86,10 +88,26 @@ class General {
   bool allowDownloadingImagesInGallery = true;
   bool disablePermissions = false;
   String sideScreenTitle = "Maverics Labs v2.25";
-
+  List<int> authTitleRGB = [255, 255, 255];
+  List<int> authSubtitleRGB = [128, 128, 128];
+  List<int> authButtonRGB = [70, 168, 238];
+  List<int> authButtonTextRGB = [255, 255, 255];
+  List<int> authFooterRGB = [255, 255, 255];
+  List<int> authTextFieldRGB = [128, 128, 128];
+  List<int> authTextFieldTextRGB = [255, 255, 255];
+  List<int> authBackgroundRGB = [0, 0, 0];
   General();
 
   General.fromJson(Map<dynamic, dynamic> json) {
+    authTitleRGB = json['authTitleRGB'] == null ? [255, 255, 255] : json['authTitleRGB'].cast<int>();
+    authSubtitleRGB = json['authSubtitleRGB'] == null ? [128, 128, 128] : json['authSubtitleRGB'].cast<int>();
+    authButtonRGB = json['authButtonRGB'] == null ? [70, 168, 238] : json['authButtonRGB'].cast<int>();
+    authButtonTextRGB = json['authButtonTextRGB'] == null ? [255, 255, 255] : json['authButtonTextRGB'].cast<int>();
+    authFooterRGB = json['authFooterRGB'] == null ? [255, 255, 255] : json['authFooterRGB'].cast<int>();
+    authTextFieldRGB = json['authTextFieldRGB'] == null ? [128, 128, 128] : json['authTextFieldRGB'].cast<int>();
+    authTextFieldTextRGB = json['authTextFieldTextRGB'] == null ? [255, 255, 255] : json['authTextFieldTextRGB'].cast<int>();
+    authBackgroundRGB = json['authBackgroundRGB'] == null ? [0, 0, 0] : json['authBackgroundRGB'].cast<int>();
+
     sideScreenTitle = json['sideScreenTitle'] ?? "Maverics Labs v2.25";
     disablePermissions = json['disablePermissions'] ?? false;
     enableBackButtonOnIosDevices = json['enableBackButtonOnIosDevices'] ?? true;
@@ -109,6 +127,7 @@ class General {
     enableInterstitials = json['enableInterstitials'] ?? false;
     enableBanner = json['enableBanner'] ?? false;
     iOSBannerID = json['iOSBannerID'] ?? "";
+    enableSkip = json['enableSkip'] ?? true;
     androidBannerID = json['androidBannerID'] ?? "";
     mainURL = json['mainURL'] ?? "https://www.cosmotic.space/";
     shareMsg = json['shareMsg'] ?? "";
@@ -168,6 +187,9 @@ class General {
     if (json['loadingRGB'] != null) {
       loadingRGB = json['loadingRGB'].cast<int>() ?? [0, 0, 0];
     }
+    if (json['loadingBackgroundRGB'] != null) {
+      loadingBackgroundRGB = json['loadingBackgroundRGB'].cast<int>() ?? [255, 255, 255];
+    }
     if (json['applicationColor'] != null) {
       applicationColor = json['applicationColor'].cast<int>() ?? [255, 255, 255];
     }
@@ -226,6 +248,7 @@ class General {
     data['enableToastOnJsAlerts'] = enableToastOnJsAlerts;
     data['enableInvites'] = enableInvites;
     data['enableSafeArea'] = enableSafeArea;
+    data['enableSkip'] = enableSkip;
     data['loadingType'] = loadingType;
     data['fontName'] = fontName;
     data['enableLoadingWebView'] = enableLoadingWebView;
@@ -262,12 +285,21 @@ class General {
     data['sideMenuHeaderRGB'] = sideMenuHeaderRGB.cast<int>();
     data['floatingMenuRGB'] = floatingMenuRGB.cast<int>();
     data['floatingIconRGB'] = floatingIconRGB.cast<int>();
+    data['loadingBackgroundRGB'] = loadingBackgroundRGB.cast<int>();
     data['topNavigationRGB'] = topNavigationRGB.cast<int>();
     data['topNavigationItemsRGB'] = topNavigationItemsRGB.cast<int>();
     data['onBoardingRGB'] = onBoardingRGB.cast<int>();
     data['onBoardingTextRGB'] = onBoardingTextRGB.cast<int>();
     data['androidSystemButtonsColor'] = androidSystemButtonsColor.cast<int>();
     data['headerItemsSelectedRGB'] = headerItemsSelectedRGB.cast<int>();
+    data['authTitleRGB'] = authTitleRGB.cast<int>();
+    data['authSubtitleRGB'] = authSubtitleRGB.cast<int>();
+    data['authButtonRGB'] = authButtonRGB.cast<int>();
+    data['authButtonTextRGB'] = authButtonTextRGB.cast<int>();
+    data['authFooterRGB'] = authFooterRGB.cast<int>();
+    data['authTextFieldRGB'] = authTextFieldRGB.cast<int>();
+    data['authTextFieldTextRGB'] = authTextFieldTextRGB.cast<int>();
+    data['authBackgroundRGB'] = authBackgroundRGB.cast<int>();
     data['enabledAdmob'] = enabledAdmob;
     data['enabledAnalytics'] = enabledAnalytics;
     data['enableSideMenu'] = enableSideMenu;
@@ -365,5 +397,41 @@ class General {
 
   Color getAndroidSystemButtonsColor() {
     return Color.fromRGBO(androidSystemButtonsColor[0], androidSystemButtonsColor[1], androidSystemButtonsColor[2], 1);
+  }
+
+  Color getLoadingBackgroundColor() {
+    return Color.fromRGBO(loadingBackgroundRGB[0], loadingBackgroundRGB[1], loadingBackgroundRGB[2], 1);
+  }
+
+  Color getAuthTitleColor() {
+    return Color.fromRGBO(authTitleRGB[0], authTitleRGB[1], authTitleRGB[2], 1);
+  }
+
+  Color getAuthSubtitleColor() {
+    return Color.fromRGBO(authSubtitleRGB[0], authSubtitleRGB[1], authSubtitleRGB[2], 1);
+  }
+
+  Color getAuthButtonColor() {
+    return Color.fromRGBO(authButtonRGB[0], authButtonRGB[1], authButtonRGB[2], 1);
+  }
+
+  Color getAuthButtonTextColor() {
+    return Color.fromRGBO(authButtonTextRGB[0], authButtonTextRGB[1], authButtonTextRGB[2], 1);
+  }
+
+  Color getAuthFooterColor() {
+    return Color.fromRGBO(authFooterRGB[0], authFooterRGB[1], authFooterRGB[2], 1);
+  }
+
+  Color getAuthTextFieldColor() {
+    return Color.fromRGBO(authTextFieldRGB[0], authTextFieldRGB[1], authTextFieldRGB[2], 1);
+  }
+
+  Color getAuthTextFieldTextColor() {
+    return Color.fromRGBO(authTextFieldTextRGB[0], authTextFieldTextRGB[1], authTextFieldTextRGB[2], 1);
+  }
+
+  Color getAuthBackgroundColor() {
+    return Color.fromRGBO(authBackgroundRGB[0], authBackgroundRGB[1], authBackgroundRGB[2], 1);
   }
 }
