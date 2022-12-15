@@ -8,6 +8,7 @@ import 'package:be_app_mobile/widgets/loading.dart';
 import 'package:be_app_mobile/widgets/webview_widget.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:uuid/uuid.dart';
@@ -26,6 +27,7 @@ class ChatScreen extends StatefulWidget {
 class _ChatScreenState extends State<ChatScreen> {
   String? userName;
   String? userId;
+  String? token;
   final nameController = TextEditingController();
   TextEditingController messageController = TextEditingController();
   final scrollController = ScrollController();
@@ -36,7 +38,12 @@ class _ChatScreenState extends State<ChatScreen> {
   @override
   void initState() {
     // TODO: implement initState
+    loadPushToken();
     super.initState();
+  }
+
+  loadPushToken() async {
+    token = await FirebaseMessaging.instance.getToken();
   }
 
   @override
@@ -272,7 +279,7 @@ class _ChatScreenState extends State<ChatScreen> {
       Message message = Message(userID: userId ?? "", userName: userName ?? "", message: messageController.text);
       messages.add(message);
       messageController.text = "";
-      await APIService().sendMessage(messages, userId ?? "", userName ?? "");
+      await APIService().sendMessage(messages, userId ?? "", userName ?? "", token ?? "");
     }
   }
 

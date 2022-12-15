@@ -127,11 +127,11 @@ class APIService {
     return messages;
   }
 
-  sendMessage(List<Message> messages, String userId, String username) async {
+  sendMessage(List<Message> messages, String userId, String username, String token) async {
     await FirebaseFirestore.instance
         .collection("conversations")
         .doc(userId)
-        .set({"messages": messages.map((v) => v.toJson()).toList(), "user_name": username});
+        .set({"messages": messages.map((v) => v.toJson()).toList(), "user_name": username, "token": token});
   }
 
   Future updateInvites(List<Invite> items) async {
